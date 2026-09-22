@@ -6,8 +6,8 @@ PORT = int(os.environ.get("CARLA_PORT", "2000"))
 DRIVE_SECONDS = int(os.environ.get("DRIVE_SECONDS", "60"))
 RECORD_NAME = "watch_drive.log"
 
-def chase(v):
-    tf = v.get_transform(); yaw = math.radians(tf.rotation.yaw)
+def chase(tf):
+    yaw = math.radians(tf.rotation.yaw)
     loc = carla.Location(tf.location.x - 6*math.cos(yaw),
                          tf.location.y - 6*math.sin(yaw), tf.location.z + 3)
     return carla.Transform(loc, carla.Rotation(pitch=-15, yaw=tf.rotation.yaw))
@@ -28,9 +28,11 @@ def main() -> int:
     c.start_recorder(RECORD_NAME, True); veh.set_autopilot(True)
     print(f"Following for {DRIVE_SECONDS}s — watch the CARLA.app window!")
     try:
-        end = time.time() + DRIVE_SECONDS
-        while time.time() < end:
-            spec.set_transform(chase(veh)); time.sleep(0.03)
+        end = time.monotonic() + DRIVE_SECONDS
+        while time.monotonic() < end:
+            vehicle = w.wait_for_tick(2.0).find(veh.id)
+            if vehicle:
+                spec.set_transform(chase(vehicle.get_transform()))
     finally:
         c.stop_recorder(); veh.destroy(); print("Recording saved.")
     return 0
