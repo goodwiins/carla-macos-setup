@@ -4,6 +4,7 @@
 #   ./run.sh python watch_drive.py
 #   ./run.sh bash                # shell inside the container
 set -euo pipefail
+export DOCKER_CONTEXT=colima
 cd "$(dirname "$0")"
 IMAGE="carla-client:0.9.15"
 docker build --platform=linux/amd64 -t "$IMAGE" .
