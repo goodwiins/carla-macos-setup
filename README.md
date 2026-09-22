@@ -69,6 +69,18 @@ lsof -nP -iTCP:2000 -sTCP:LISTEN  # wait for a listener before running a client
 
 `watch_drive.py` follows an autopilot vehicle for 60 seconds and saves a CARLA recorder `.log` **inside the server wrapper**. That log is simulation data, not video. `replay_drive.py` replays it in the CARLA window. Stop the server by closing CARLA; `colima stop` is optional.
 
-If the client times out, confirm the CARLA town is still open and port 2000 is listening, then retry. The initial smoke test succeeded here with client/server `0.9.15` and Town10HD. A later drive test timed out after the server exited, so the drive/replay scripts still need a live end-to-end check.
+If the client times out, confirm the CARLA town is still open and port 2000 is listening, then retry. The smoke test succeeded here with client/server `0.9.15` and Town10HD. `watch_drive.py` completed a 60-second run; its tick-synced camera also passed a 10-second run. `replay_drive.py` has not been tested end to end.
+
+## Agent skill
+
+Agents working in this repository can follow [AGENTS.md](AGENTS.md). To use the bundled skill from any Codex task, install it once from this checkout:
+
+```sh
+cd ~/CARLA/client
+mkdir -p ~/.codex/skills
+ln -s "$PWD/skills/carla-macos" ~/.codex/skills/carla-macos
+```
+
+Start a new Codex task and ask for `$carla-macos` to install, run, or troubleshoot this setup. The skill provides instructions; it does not install CARLA until asked.
 
 Based on [Nathan Friend's article](https://nathanfriend.com/2026/07/17/carla-on-macos-with-fable.html) and [Fable's setup guide](https://gitlab.com/-/snippets/6006738/raw). This repository captures the Docker-client path used here; the article also links to later native-client work.
