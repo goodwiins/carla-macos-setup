@@ -71,6 +71,12 @@ lsof -nP -iTCP:2000 -sTCP:LISTEN  # wait for a listener before running a client
 
 If the client times out, confirm the CARLA town is still open and port 2000 is listening, then retry. The smoke test succeeded here with client/server `0.9.15` and Town10HD. `watch_drive.py` completed a 60-second run; its tick-synced camera also passed a 10-second run. `replay_drive.py` has not been tested end to end.
 
+## Screenshots
+
+These captures from this Mac show the [Sikarugir configuration](screenshots/carla-sikarugir-setup.png) and [CARLA running](screenshots/carla-running-macos.png).
+
+![CARLA running on macOS](screenshots/carla-running-macos.png)
+
 ## Agent skill
 
 Agents working in this repository can follow [AGENTS.md](AGENTS.md). To use the bundled skill from any Codex task, install it once from this checkout:
